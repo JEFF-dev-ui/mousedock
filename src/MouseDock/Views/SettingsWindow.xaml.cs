@@ -627,7 +627,13 @@ namespace MouseDock.Views
         {
             var editor = new CharacterEditorWindow(App.Settings, mode) { Owner = this };
             if (editor.ShowDialog() != true) return;
+            ApplyCharacterEdit(editor);
+        }
+
+        private void ApplyCharacterEdit(CharacterEditorWindow editor)
+        {
             editor.ApplyTo(App.Settings);
+            App.Icon?.ApplyStyle(App.Settings.IconStyle, false);
             if (editor.ShowAfterApply) App.SetSurface("icon");
             else if (App.Settings.SurfaceMode == "taskbar") App.Settings.TaskbarStyle = editor.Draft.IconStyle;
             else if (App.Settings.SurfaceMode == "edge") App.Settings.EdgeStyle = editor.Draft.IconStyle;
