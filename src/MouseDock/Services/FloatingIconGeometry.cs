@@ -42,7 +42,13 @@ public static class FloatingIconGeometry
         double factor = horizontal && vertical
             ? 1 + (dw * start.Width + dh * start.Height) / (start.Width * start.Width + start.Height * start.Height)
             : horizontal ? 1 + dw / start.Width : 1 + dh / start.Height;
-        double available = Math.Min(workArea.Width / start.Width, workArea.Height / start.Height);
+        double horizontalRoom = (edges & 1) != 0 ? start.Right - workArea.Left :
+            (edges & 2) != 0 ? workArea.Right - start.Left :
+            2 * Math.Min(start.Left + start.Width / 2 - workArea.Left, workArea.Right - start.Left - start.Width / 2);
+        double verticalRoom = (edges & 4) != 0 ? start.Bottom - workArea.Top :
+            (edges & 8) != 0 ? workArea.Bottom - start.Top :
+            2 * Math.Min(start.Top + start.Height / 2 - workArea.Top, workArea.Bottom - start.Top - start.Height / 2);
+        double available = Math.Max(.01, Math.Min(horizontalRoom / start.Width, verticalRoom / start.Height));
         factor = Math.Clamp(factor, Math.Min(minimum, available), Math.Min(maximum, available));
         double width = start.Width * factor, height = start.Height * factor;
         double x = (edges & 1) != 0 ? start.Right - width : (edges & 2) != 0 ? start.Left : start.Left + (start.Width - width) / 2;
