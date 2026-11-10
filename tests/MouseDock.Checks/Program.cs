@@ -37,6 +37,8 @@ internal static class Program
             ("Multi-device icons remain square and preserve identity colors", IconCompositionChecks.Layout),
             ("Floating edges resize with anchored geometry and independent sizes", FloatingInteractionChecks.Geometry),
             ("Floating and mini surfaces expand exclusively into the full panel", FloatingInteractionChecks.Expansion),
+            ("Character editor cancels drafts and applies only appearance settings", CharacterEditorChecks.Draft),
+            ("Photo overlays display live device names and status", CharacterEditorChecks.PhotoDetails),
             ("Reference themes preserve exact dark/light palettes and legacy choices", ReferenceThemeChecks.Themes),
             ("Reference themes retain picture settings across clone and restart", ReferenceThemeChecks.Preferences),
             ("Reference themes crop portrait and landscape images without gaps", ReferenceThemeChecks.Crop),

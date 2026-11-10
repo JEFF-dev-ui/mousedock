@@ -425,13 +425,15 @@ namespace MouseDock.Views
                     var portrait = new CharacterBatteryIcon
                     {
                         Width = _activeStyle == "portrait" ? 160 : 120,
-                        Height = _activeStyle == "portrait" ? Math.Max(192, 80 + shown.Count * 30) : 120,
+                        Height = _activeStyle == "portrait" ? Math.Max(208, 72 + shown.Count * 58) : 120,
                         Character = _activeStyle == "portrait" ? "photo" : App.Settings.ReferenceCharacter,
                         PhotoPath = string.IsNullOrWhiteSpace(App.Settings.IconBackground) ? App.Settings.PhotoAsset : App.Settings.IconBackground,
                         PhotoZoom = App.Settings.PhotoZoom, PhotoOffsetX = App.Settings.PhotoOffsetX, PhotoOffsetY = App.Settings.PhotoOffsetY,
                         Accent = new SolidColorBrush(AppearanceColors.IconPalette(App.Settings, _theme, App.Settings.IconFollowTheme).Accent),
                         Ink = new SolidColorBrush(AppearanceColors.IconPalette(App.Settings, _theme, App.Settings.IconFollowTheme).Text),
-                        Surface = new SolidColorBrush(AppearanceColors.IconPalette(App.Settings, _theme, App.Settings.IconFollowTheme).Surface),
+                        Surface = new SolidColorBrush(AppearanceColors.TryColor(App.Settings.CharacterBackgroundColor, out var background)
+                            ? background : AppearanceColors.IconPalette(App.Settings, _theme, App.Settings.IconFollowTheme).Surface),
+                        TransparentBackground = App.Settings.CharacterTransparentBackground,
                         Low = new SolidColorBrush(AppearanceColors.IconPalette(App.Settings, _theme, App.Settings.IconFollowTheme).Low),
                         Muted = new SolidColorBrush(AppearanceColors.IconPalette(App.Settings, _theme, App.Settings.IconFollowTheme).TextDim),
                         Devices = _activeStyle == "portrait" ? shown : null, DataContext = item
@@ -446,7 +448,7 @@ namespace MouseDock.Views
                     Attach(portrait, item);
                 }
                 RootGrid.Width = _activeStyle == "portrait" ? 160 : ReferenceIcons.Columns * 120;
-                RootGrid.Height = _activeStyle == "portrait" ? Math.Max(192, 80 + shown.Count * 30)
+                RootGrid.Height = _activeStyle == "portrait" ? Math.Max(208, 72 + shown.Count * 58)
                     : Math.Ceiling(count / (double)ReferenceIcons.Columns) * 120;
                 return;
             }
