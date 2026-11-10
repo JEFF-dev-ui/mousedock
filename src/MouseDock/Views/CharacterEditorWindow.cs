@@ -148,7 +148,7 @@ public sealed class CharacterEditorWindow : Window
         try
         {
             string directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MouseDock", "portraits");
-            Draft.PhotoAsset = PictureBackground.Import(picker.FileName, directory);
+            Draft.PhotoAsset = ImageImport.Import(picker.FileName, directory, true);
             Draft.IconBackground = "";
             Draft.PhotoOffsetX = Draft.PhotoOffsetY = 0; Draft.PhotoZoom = _zoom.Value = 1;
             _characters.SelectedItem = _characters.Items.OfType<ComboBoxItem>().Single(item => (string)item.Tag == "photo");
