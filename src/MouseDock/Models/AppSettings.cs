@@ -32,6 +32,7 @@ namespace MouseDock.Models
         public string IconMode { get; set; } = "photo";
         public string CharacterAsset { get; set; } = "";
         public string AnimatedCharacter { get; set; } = "otter";
+        public string ReferenceCharacter { get; set; } = "rei";
         public bool AnimatedPhotoBackground { get; set; }
         public string PhotoAsset { get; set; } = "";
         public double PhotoZoom { get; set; } = 1.0;
@@ -143,6 +144,7 @@ namespace MouseDock.Models
                 CharacterAsset = CharacterAsset,
                 PhotoAsset = PhotoAsset,
                 AnimatedCharacter = AnimatedCharacter,
+                ReferenceCharacter = ReferenceCharacter,
                 AnimatedPhotoBackground = AnimatedPhotoBackground,
                 PhotoZoom = PhotoZoom,
                 PhotoOffsetX = PhotoOffsetX,
