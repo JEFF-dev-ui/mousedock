@@ -31,6 +31,7 @@ internal static class Program
             return R98KeyboardChecks.RunLive();
         var checks = new (string Name, Action Check)[]
         {
+            ("Independent theme floating and tray color overrides survive reset", AppearanceColorChecks.IndependentColors),
             ("Reference themes preserve exact dark/light palettes and legacy choices", ReferenceThemeChecks.Themes),
             ("Reference themes retain picture settings across clone and restart", ReferenceThemeChecks.Preferences),
             ("Reference themes crop portrait and landscape images without gaps", ReferenceThemeChecks.Crop),
