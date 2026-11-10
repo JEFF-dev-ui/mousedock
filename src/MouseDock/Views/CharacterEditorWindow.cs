@@ -41,9 +41,10 @@ public sealed class CharacterEditorWindow : Window
         Foreground = new SolidColorBrush(theme.Text);
         FontFamily = new FontFamily("Segoe UI, Microsoft YaHei UI");
         var panel = new StackPanel { Margin = new Thickness(16) };
-        Content = new ScrollViewer { Content = panel, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
-        _preview = new CharacterBatteryIcon { Width = 320, Height = 260, Level = 76, Cursor = Cursors.SizeAll };
-        var devices = App.Battery?.VisibleDevices.Take(4).ToList();
+        Content = new ScrollViewer { Content = panel, Background = Background, Foreground = Foreground,
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
+        _preview = new CharacterBatteryIcon { Width = 120, Height = 120, Level = 76, Cursor = Cursors.SizeAll };
+        var devices = App.Battery?.VisibleDevices.Take(CharacterBatteryIcon.MaximumPhotoDevices).ToList();
         if (devices?.Count > 0)
         {
             _preview.Devices = devices;
@@ -53,7 +54,8 @@ public sealed class CharacterEditorWindow : Window
             _preview.SetBinding(CharacterBatteryIcon.StaleProperty, new System.Windows.Data.Binding(nameof(DeviceInfo.IsStale)) { Source = first });
             _preview.SetBinding(CharacterBatteryIcon.KindProperty, new System.Windows.Data.Binding(nameof(DeviceInfo.Kind)) { Source = first });
         }
-        panel.Children.Add(new Border { Child = _preview, Background = new SolidColorBrush(theme.Surface), CornerRadius = new CornerRadius(8) });
+        panel.Children.Add(new Border { Child = new Viewbox { Width = 320, Height = 300, Stretch = Stretch.Uniform, Child = _preview },
+            Background = new SolidColorBrush(theme.Surface), CornerRadius = new CornerRadius(8) });
         _characters = new ComboBox { Margin = new Thickness(0, 12, 0, 6) };
         foreach (var (key, label) in new[] { ("rei", "绫波丽"), ("asuka", "明日香"), ("peek", "趴趴款"), ("photo", "我的照片") })
             _characters.Items.Add(new ComboBoxItem { Tag = key, Content = label });
@@ -69,7 +71,7 @@ public sealed class CharacterEditorWindow : Window
         panel.Children.Add(_characters);
         var tools = new DockPanel { Margin = new Thickness(0, 4, 0, 8) };
         var transparent = new CheckBox { Content = "透明背景", IsChecked = Draft.CharacterTransparentBackground,
-            VerticalAlignment = VerticalAlignment.Center };
+            Foreground = Foreground, VerticalAlignment = VerticalAlignment.Center };
         transparent.Checked += (_, __) => { Draft.CharacterTransparentBackground = true; Refresh(); };
         transparent.Unchecked += (_, __) => { Draft.CharacterTransparentBackground = false; Refresh(); };
         tools.Children.Add(transparent);
@@ -161,6 +163,8 @@ public sealed class CharacterEditorWindow : Window
     {
         var palette = AppearanceColors.IconPalette(Draft, App.Theme, Draft.IconFollowTheme);
         _preview.Character = Draft.IconStyle == "portrait" ? "photo" : Draft.ReferenceCharacter;
+        var size = _preview.Character == "photo" ? CharacterBatteryIcon.PhotoSize(_preview.Devices?.Count ?? 0) : new Size(120, 120);
+        _preview.Width = size.Width; _preview.Height = size.Height;
         _preview.PhotoPath = string.IsNullOrWhiteSpace(Draft.IconBackground) ? Draft.PhotoAsset : Draft.IconBackground;
         if (_photoPath != _preview.PhotoPath)
         {
