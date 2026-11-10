@@ -39,6 +39,12 @@ internal static class FloatingInteractionChecks
         var start = new Rect(100, 100, 100, 100);
         var resized = (Rect)resize.Invoke(null, [start, new Vector(-40, -40), 5, .5, 3d, new Rect(0, 0, 1000, 800)])!;
         Require(resized.BottomRight == new Point(200, 200) && resized.Size == new Size(140, 140), "Resize does not preserve the opposite corner.");
+        var edgeStart = new Rect(900, 100, 100, 100);
+        var edgeResize = (Rect)resize.Invoke(null, [edgeStart, new Vector(100, 0), 2, .5, 3d, new Rect(0, 0, 1000, 800)])!;
+        Require(edgeResize == edgeStart, "Growing at the screen edge moves the opposite anchor instead of stopping.");
+        var centerStart = new Rect(100, 0, 100, 100);
+        var centerResize = (Rect)resize.Invoke(null, [centerStart, new Vector(100, 0), 2, .5, 3d, new Rect(0, 0, 1000, 800)])!;
+        Require(centerResize == centerStart, "Centered orthogonal growth jumps away from the screen edge.");
         var settings = new AppSettings { IconScale = 1.25 };
         var store = type.GetMethod("StoreScale")!;
         store.Invoke(null, [settings, "character", 2d]);
